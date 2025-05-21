@@ -5,6 +5,7 @@ import json
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
+# --- Simulate a "database" of users and their info ---
 DB_FILE = 'users_db.json'
 
 def load_users_db():
@@ -21,8 +22,6 @@ def save_users_db(db):
         json.dump(db, f, indent=4)
 
 users_db = load_users_db()
-# Add a default user if the DB is empty (for testing)
-# And ensure existing entries have the new field (important for this KeyError)
 if not users_db:
     users_db = {
         "test@example.com": {
@@ -33,11 +32,15 @@ if not users_db:
         }
     }
     save_users_db(users_db)
-else: # Loop through existing users to ensure they have the new field
+else:
     for user_id, details in users_db.items():
+        if "fullname" not in details:
+            details["fullname"] = ""
+        if "phonenumber" not in details:
+            details["phonenumber"] = ""
         if "profile_picture_base64" not in details:
             details["profile_picture_base64"] = ""
-    save_users_db(users_db) # Save updated structure
+    save_users_db(users_db)
 
 # --- ROUTES ---
 
@@ -54,7 +57,6 @@ def login():
     password = data.get('password')
 
     user_id = email
-    
     if user_id not in users_db:
         users_db[user_id] = {
             "password": password,
@@ -64,14 +66,11 @@ def login():
         }
         save_users_db(users_db)
     
-    # --- MODIFIED LINES FOR KEYERROR FIX ---
-    # Use .get() method to safely retrieve data, providing a default empty string if key is missing
     session['logged_in'] = True
     session['user_email'] = email
-    session['user_fullname'] = users_db[user_id].get('fullname', '') # Use .get()
-    session['user_phonenumber'] = users_db[user_id].get('phonenumber', '') # Use .get()
-    session['profile_picture_base64'] = users_db[user_id].get('profile_picture_base64', '') # Use .get()
-    # --- END MODIFIED LINES ---
+    session['user_fullname'] = users_db[user_id].get('fullname', '')
+    session['user_phonenumber'] = users_db[user_id].get('phonenumber', '')
+    session['profile_picture_base64'] = users_db[user_id].get('profile_picture_base64', '')
 
     return jsonify({'message': 'Login successful'}), 200
 
@@ -89,7 +88,7 @@ def verify_info():
     data = request.get_json()
     new_fullname = data.get('fullName')
     new_phonenumber = data.get('phoneNumber')
-    profile_picture_base64 = data.get('photoId', '') # Changed from 'profilePicture' to 'photoId' to match verification.html
+    profile_picture_base64 = data.get('photoId', '')
     user_email = session.get('user_email')
 
     if user_email and user_email in users_db:
@@ -124,8 +123,8 @@ def logout():
 if __name__ == '__main__':
     if not os.path.exists('templates'):
         os.makedirs('templates')
-    users_db = load_users_db() # Reload DB to apply initial fix
-    if not users_db: # Re-initialize if empty
+    users_db = load_users_db()
+    if not users_db:
         users_db = {
             "test@example.com": {
                 "password": "password123",
@@ -135,10 +134,10 @@ if __name__ == '__main__':
             }
         }
         save_users_db(users_db)
-    else: # This block handles existing users from old JSON structure
+    else:
         needs_save = False
         for user_id, details in users_db.items():
-            if "fullname" not in details: # Ensure all fields are present
+            if "fullname" not in details:
                 details["fullname"] = ""
                 needs_save = True
             if "phonenumber" not in details:
@@ -150,4 +149,7 @@ if __name__ == '__main__':
         if needs_save:
             save_users_db(users_db)
 
-    app.run(debug=True)
+    # --- CRITICAL CHANGE FOR RENDER DEPLOYMENT ---
+    port = int(os.environ.get("PORT", 5000)) # Get port from environment variable, default to 5000
+    app.run(host='0.0.0.0', port=port, debug=False) # Bind to 0.0.0.0 and disable debug for production
+    # --- END CRITICAL CHANGE ---
