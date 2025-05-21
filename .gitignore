@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+.Python
+venv/
+env/
+*.egg-info/
+
+# Flask
+instance/
+.flaskenv
+
+# Database (for this demo, as we don't want it publicly accessible or overwritten)
+users_db.json
+
+# macOS
+.DS_Store

