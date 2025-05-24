@@ -10,7 +10,11 @@ env/
 instance/
 .flaskenv
 
-# Database (for this demo, as we don't want it publicly accessible or overwritten)
+# Environment files (IMPORTANT for credentials)
+.env
+
+# Database (old JSON file, good to keep ignoring)
+# (for this demo, as we don't want it publicly accessible or overwritten)
 users_db.json
 
 # macOS
